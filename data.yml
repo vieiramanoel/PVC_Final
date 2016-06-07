@@ -1,0 +1,10 @@
+%YAML:1.0
+hough_parameters:
+  Gap : 100
+  Lenght: 45
+  Thresh: 107
+
+canny_parameters:
+  Thresh1: 45
+  Thresh2: 308
+

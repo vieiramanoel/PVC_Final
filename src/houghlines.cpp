@@ -1,16 +1,30 @@
 #include "houghlines.hpp"
 
-void HoughLines::onTrackbar(int, void* param){
-    HoughLines* thisptr = (HoughLines*) param;
-    cv::HoughLinesP(thisptr->dst, thisptr->lines, 1, CV_PI/180, thisptr->_threshold, thisptr->_minlenght, thisptr->_maxgap);
+HoughLines::HoughLines(){
+    cv::FileStorage paramReader("data.yml", cv::FileStorage::READ);
+    auto houghParam = paramReader["hough_parameters"];
+    _maxgap = houghParam["Gap"];
+    _minlenght = houghParam["Lenght"];
+    _threshold = houghParam["Thresh"];
+    auto cannyParam = paramReader["canny_parameters"];
+    _cannythresh1 = cannyParam["Thresh1"];
+    _cannythresh2 = cannyParam["Thresh2"];
+    std::cout << _maxgap << std::endl;
+}
+
+
+void HoughLines::onHoughTrackbar(int, void* param){
+}
+
+void HoughLines::onCannyTrackbar(int, void* param){
 }
 
 void HoughLines::calculateProb(cv::Mat input){
     preProcessor(input);
-    cv::createTrackbar( "Hough Gap", "RGB Video", &_maxgap, 50, onTrackbar, (void*) this);
-    cv::createTrackbar( "Hough Lenght", "RGB Video", &_minlenght, 200, onTrackbar, (void*) this);
-    cv::createTrackbar( "Hough Thresh", "RGB Video", &_threshold, 200, onTrackbar, (void*) this);
-    onTrackbar(_minlenght, (void*)this);
+    cv::createTrackbar( "Hough Gap", "RGB Video", &_maxgap, 1000, onHoughTrackbar, (void*) this);
+    cv::createTrackbar( "Hough Lenght", "RGB Video", &_minlenght, 200, onHoughTrackbar, (void*) this);
+    cv::createTrackbar( "Hough Thresh", "RGB Video", &_threshold, 200, onHoughTrackbar, (void*) this);
+    cv::HoughLinesP(dst, lines, 1, CV_PI/180, _threshold, _minlenght, _maxgap);
     drawGreatLines(input);
 }
 
@@ -26,8 +40,12 @@ void HoughLines::drawGreatLines(cv::Mat input){
             cv::Point(bestLines[i][2], bestLines[i][3]), cv::Scalar(139,0,0), 3, 8 );
 }
 
+
 void HoughLines::preProcessor(cv::Mat input){
-    cv::Canny(input, dst, 50, 200, 3);
+    cv::Canny(input, dst, _cannythresh1, _cannythresh2, 3);
+    cv::createTrackbar("Canny Threshold 1", "Canny Out", &_cannythresh1, 1000, onCannyTrackbar, (void*) this);
+    cv::createTrackbar("Canny Threshold 2", "Canny Out", &_cannythresh2, 1000, onCannyTrackbar, (void*) this);
+    cv::cvtColor(dst, cdst, CV_GRAY2BGR);
 }
 
 cv::Mat HoughLines::getResult(){
