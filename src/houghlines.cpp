@@ -9,14 +9,28 @@ HoughLines::HoughLines(){
     auto cannyParam = paramReader["canny_parameters"];
     _cannythresh1 = cannyParam["Thresh1"];
     _cannythresh2 = cannyParam["Thresh2"];
-    std::cout << _maxgap << std::endl;
+    
+}
+
+HoughLines::~HoughLines(){
+    cv::FileStorage paramWriter("data.yml", cv::FileStorage::WRITE);
+    paramWriter << "hough_parameters";
+    paramWriter << "{" << "Gap"  << _maxgap;
+    paramWriter        << "Lenght" << _minlenght;
+    paramWriter        << "Thresh" << _threshold << "}";
+    paramWriter << "canny_parameters";
+    paramWriter << "{" << "Thresh1" << _cannythresh1; 
+    paramWriter        << "Thresh2" << _cannythresh2 << "}";
+    paramWriter.release();
 }
 
 
 void HoughLines::onHoughTrackbar(int, void* param){
+
 }
 
 void HoughLines::onCannyTrackbar(int, void* param){
+
 }
 
 void HoughLines::calculateProb(cv::Mat input){

@@ -7,6 +7,7 @@ class HoughLines
 {
   public:
     HoughLines();
+    ~HoughLines();
     void calculateProb(cv::Mat);
     void calculateStd(cv::Mat);
     cv::Mat getResult();
@@ -19,12 +20,11 @@ class HoughLines
     cv::Mat dst, cdst;
     std::vector<cv::Vec2f> stdlines;
     std::vector<cv::Vec4i> lines;
-    int _minlenght = 33;
-    int _maxgap = 104;
-    int _threshold = 125;
-    int _cannythresh1 = 0;
-    int _cannythresh2 = 0;
+    int _minlenght;
+    int _maxgap;
+    int _threshold;
+    int _cannythresh1;
+    int _cannythresh2;
 };
-
 
 #endif
