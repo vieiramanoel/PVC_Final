@@ -2,7 +2,7 @@
 CC = g++
 
 # C building settings
-CFLAGS = -O2 -ansi -Wall `pkg-config --cflags opencv`
+CFLAGS = -O2 -ansi -Wall `pkg-config --cflags opencv` -std=c++11
 LIBS = `pkg-config --libs opencv`
 
 # C++ source and object files

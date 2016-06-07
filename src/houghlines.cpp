@@ -1,15 +1,33 @@
 #include "houghlines.hpp"
 
+void HoughLines::onTrackbar(int, void* param){
+    HoughLines* thisptr = (HoughLines*) param;
+    cv::HoughLinesP(thisptr->dst, thisptr->lines, 1, CV_PI/180, thisptr->_threshold, thisptr->_minlenght, thisptr->_maxgap);
+}
+
 void HoughLines::calculateProb(cv::Mat input){
     preProcessor(input);
-    cv::HoughLinesP(dst, lines, 1, CV_PI/180, 50, 50, 10);
+    cv::createTrackbar( "Hough Gap", "RGB Video", &_maxgap, 50, onTrackbar, (void*) this);
+    cv::createTrackbar( "Hough Lenght", "RGB Video", &_minlenght, 200, onTrackbar, (void*) this);
+    cv::createTrackbar( "Hough Thresh", "RGB Video", &_threshold, 200, onTrackbar, (void*) this);
+    onTrackbar(_minlenght, (void*)this);
+    drawGreatLines(input);
+}
+
+void HoughLines::drawGreatLines(cv::Mat input){
+    std::vector<cv::Vec4i> bestLines;
+
+    for (size_t i = 0; i < lines.size(); ++i)
+        if(norm(lines[i]) > 100)
+            bestLines.push_back(lines[i]);
+
+    for(size_t i = 0; i < bestLines.size(); i++)
+        line(input, cv::Point(bestLines[i][0], bestLines[i][1]),
+            cv::Point(bestLines[i][2], bestLines[i][3]), cv::Scalar(139,0,0), 3, 8 );
 }
 
 void HoughLines::preProcessor(cv::Mat input){
-    //cv::cvtColor(dst, cdst, CV_BGR2HSV);
     cv::Canny(input, dst, 50, 200, 3);
-    cv::imshow("lala", dst);
-
 }
 
 cv::Mat HoughLines::getResult(){
