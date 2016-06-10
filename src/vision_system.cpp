@@ -14,7 +14,7 @@ int main(int argc, char const *argv[])
         hough.calculateProb(hsvFrame);
         output = hough.getResult();
         cv::imshow("RGB Video", hsvFrame);
-        cv::imshow("Canny Out", output);
+        //cv::imshow("Canny Out", output);
         if(cv::waitKey(30) == 27) break;
     }
 
