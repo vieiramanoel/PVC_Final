@@ -10,8 +10,11 @@ HoughLines::HoughLines(){
     _cannythresh1 = cannyParam["Thresh1"];
     _cannythresh2 = cannyParam["Thresh2"];
     auto limitParam = paramReader["limit_parameters"];
-    _infLim = limitParam["Norm"];
-    _rightLim = limitParam["Right"];
+    _lenLim = limitParam["Norm"];
+    _leftLim = limitParam["left"];
+    _leftDst = limitParam["left_Distance"];
+    _bottomLim = limitParam["Bottom"];
+    _bottomDst = limitParam["Bottom_Distance"];
     _hasfinishedfor = false;
 }
 
@@ -25,91 +28,49 @@ HoughLines::~HoughLines(){
     paramWriter << "{" << "Thresh1" << _cannythresh1; 
     paramWriter        << "Thresh2" << _cannythresh2 << "}";
     paramWriter << "limit_parameters";
-    paramWriter << "{" << "Norm" << _infLim;
-    paramWriter        << "Right" << _rightLim << "}";
+    paramWriter << "{" << "Norm" << _lenLim;
+    paramWriter        << "Left" << _leftLim;
+    paramWriter        << "Left_Distance" << _leftDst;
+    paramWriter        << "Bottom" << _bottomLim;
+    paramWriter        << "Bottom_Distance" << _bottomDst << "}";
     paramWriter.release();
 }
 
 void HoughLines::calculateProb(cv::Mat input){
     preProcessor(input);
-    cv::createTrackbar( "Hough Gap", "RGB Video", &_maxgap, 1000);
+    /*cv::createTrackbar( "Hough Gap", "RGB Video", &_maxgap, 1000);
     cv::createTrackbar( "Hough Lenght", "RGB Video", &_minlenght, 200);
-    cv::createTrackbar( "Hough Thresh", "RGB Video", &_threshold, 200);
+    cv::createTrackbar( "Hough Thresh", "RGB Video", &_threshold, 200);*/
     cv::HoughLinesP(dst, lines, 1, CV_PI/180, _threshold, _minlenght, _maxgap);
     drawGreatLines(input);
 }
 
 void HoughLines::drawGreatLines(cv::Mat input){
     std::vector<cv::Vec4i> bestLines;
-    cv::createTrackbar("Right Lim", "RGB Video", &_rightLim, 100);
-    
+    cv::createTrackbar("Left Lim", "RGB Video", &_leftLim, 300);
+    cv::createTrackbar("LDistance", "RGB Video", &_leftDst, 50);
+    cv::createTrackbar("Bottom Lim", "RGB Video", &_bottomLim, 100);
+    cv::createTrackbar("Distance", "RGB Video", &_bottomDst, 20);
     for(auto line : lines){
-        if(cv::norm(line) > _infLim)
-            if(line[0] < _rightLim)
+        if(cv::norm(line) > _lenLim)
+            if(line[0] < _leftLim and (std::abs(line[2] - line[0]) < _leftDst))
                 bestLines.push_back(line);
-    }
+            if (line[0] < _bottomLim and (std::abs(line[1] - line[3]) < _bottomDst))
+                bestLines.push_back(line);
 
+    }
     
-    for(auto bestLine : bestLines)
+    for(auto bestLine : lines)
         cv::line(input, cv::Point(bestLine[0], bestLine[1]),
             cv::Point(bestLine[2], bestLine[3]), cv::Scalar(139,0,0), 3, 8 );
-    
-    /*
-    //max values for vertical comparison
-    int vmaxValue = std::numeric_limits<int>::max();
-    int vminValue = std::numeric_limits<int>::min();
-
-    //max values for horizontal comparison
-    int hmaxValue = std::numeric_limits<int>::max();
-    int hminValue = std::numeric_limits<int>::min();
-
-    int leftLine, rightLine, 
-        bottomLine, topLine;
-
-    for (size_t i = 0; i < lines.size() and (not _hasfinishedfor); ++i)
-    {
-        std::cout << lines[i][0] << std::endl;
-        //left edge line
-        if (lines[i][0] < vmaxValue)
-            leftLine = i;
-
-        //right edge line
-        if (lines[i][2] > vminValue)
-            rightLine = i;
-
-        //bottom edge line
-        if (lines[i][1] < hmaxValue)
-            bottomLine = i;
-
-        if (lines[i][3] > hminValue)
-            topLine = i;
-        _hasfinishedfor = true;
-    }
-    if (_hasfinishedfor)
-    {
-        externalLines.push_back(bestLines[leftLine]);
-        externalLines.push_back(bestLines[rightLine]);
-        externalLines.push_back(bestLines[bottomLine]);
-        externalLines.push_back(bestLines[topLine]);
-
-        for(auto externalLine : externalLines)
-            line(input, cv::Point(externalLine[0], externalLine[1]),
-                cv::Point(externalLine[2], externalLine[3]), cv::Scalar(0,0,139), 3, 8 );
-    }
-    else{
-        for(auto bestLine : bestLines)
-        cv::line(input, cv::Point(bestLine[0], bestLine[1]),
-            cv::Point(bestLine[2], bestLine[3]), cv::Scalar(139,0,0), 3, 8 );
-    }*/
 }
 
 
 void HoughLines::preProcessor(cv::Mat input){
     cv::blur(input, input, cv::Size(5,5));
     cv::Canny(input, dst, _cannythresh1, _cannythresh2, 3);
-    //cv::createTrackbar("Canny Threshold 1", "Canny Out", &_cannythresh1, 1000, onCannyTrackbar, (void*) this);
-    //cv::createTrackbar("Canny Threshold 2", "Canny Out", &_cannythresh2, 1000, onCannyTrackbar, (void*) this);
-    cv::cvtColor(dst, cdst, CV_GRAY2BGR);
+    cv::createTrackbar("Canny Threshold 1", "Canny Out", &_cannythresh1, 1000);
+    cv::createTrackbar("Canny Threshold 2", "Canny Out", &_cannythresh2, 1000);
 }
 
 cv::Mat HoughLines::getResult(){

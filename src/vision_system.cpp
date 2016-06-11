@@ -11,10 +11,12 @@ int main(int argc, char const *argv[])
     while(true){
         video >> frame;
         cv::cvtColor(frame, hsvFrame, CV_BGR2HSV);
-        hough.calculateProb(hsvFrame);
+        std::vector<cv::Mat> channels(3);
+        cv::split(hsvFrame, channels);
+        hough.calculateProb(channels[2]);
         output = hough.getResult();
-        cv::imshow("RGB Video", hsvFrame);
-        //cv::imshow("Canny Out", output);
+        cv::imshow("RGB Video", channels[2]);
+        cv::imshow("Canny Out", output);
         if(cv::waitKey(30) == 27) break;
     }
 

@@ -1,11 +1,14 @@
 %YAML:1.0
 hough_parameters:
-   Gap: 100
-   Lenght: 45
-   Thresh: 107
+   Gap: 68
+   Lenght: 82
+   Thresh: 79
 canny_parameters:
    Thresh1: 0
-   Thresh2: 171
+   Thresh2: 90
 limit_parameters:
-   Norm: 0
-   Right: 88
+   Norm: 80
+   Left: 51
+   Left_Distance: 0
+   Bottom: 46
+   Bottom_Distance: 20

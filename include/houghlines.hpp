@@ -28,8 +28,11 @@ class HoughLines
     int _threshold;
     int _cannythresh1;
     int _cannythresh2;
-    int _infLim;
-    int _rightLim;
+    int _lenLim;
+    int _leftLim, _leftDst;
+    int _rightLim, _rightDst;
+    int _bottomLim, _bottomDst;
+    int _topLim, _topDst;
     bool _hasfinishedfor;
 };
 
