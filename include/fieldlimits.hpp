@@ -27,7 +27,7 @@ class FieldLimits
     int _cannythresh2;
    
     int largestArea, largestAreaIndex;
-    bool _hasfinishedfor;
+    int calibrating;
 };
 
 #endif
