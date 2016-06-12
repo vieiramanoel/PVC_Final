@@ -1,4 +1,4 @@
 %YAML:1.0
 canny_parameters:
-   Thresh1: 0
-   Thresh2: 30
+   Thresh1: 115
+   Thresh2: 263

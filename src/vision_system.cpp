@@ -1,10 +1,10 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
-#include "houghlines.hpp"
+#include "fieldlimits.hpp"
 
 int main(int argc, char const *argv[])
 {
-    HoughLines hough;
+    FieldLimits field;
     cv::VideoCapture video("rgb_video.avi");
     cv::Mat frame, hsvFrame;
     cv::Mat output, outputstd;
@@ -13,8 +13,8 @@ int main(int argc, char const *argv[])
         cv::cvtColor(frame, hsvFrame, CV_BGR2HSV);
         std::vector<cv::Mat> channels(3);
         cv::split(hsvFrame, channels);
-        hough.calculateProb(channels[2]);
-        output = hough.getResult();
+        field.calculateProb(channels[2]);
+        output = field.getResult();
         cv::imshow("RGB Video", channels[2]);
         cv::imshow("Canny Out", output);
         if(cv::waitKey(30) == 27) break;
