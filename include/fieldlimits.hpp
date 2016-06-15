@@ -11,7 +11,10 @@ class FieldLimits
     FieldLimits();
     ~FieldLimits();
     void calculateProb(cv::Mat);
-    cv::Mat getResult();
+    void setNewRect(cv::Rect);
+    bool isStable();
+
+    cv::Rect getResult();
 
   private:
     void preProcessor(cv::Mat);
@@ -28,6 +31,9 @@ class FieldLimits
    
     int largestArea, largestAreaIndex;
     int calibrating;
+    int counterAdjust_;
+
+    bool hasRectSetted_;
 };
 
 #endif
