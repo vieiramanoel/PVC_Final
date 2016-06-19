@@ -50,7 +50,9 @@ void FieldLimits::calculateProb(cv::Mat input){
                 counterAdjust_++;
         }
     }
+    drawGreatLines(input);
 }
+
 
 void FieldLimits::drawGreatLines(cv::Mat input){
     auto color = cv::Scalar::all(133);

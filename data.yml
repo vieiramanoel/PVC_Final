@@ -2,4 +2,4 @@
 canny_parameters:
    Thresh1: 51
    Thresh2: 271
-   Calibrating: 1
+   Calibrating: 0

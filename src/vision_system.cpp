@@ -21,11 +21,13 @@ int main(int argc, char const *argv[])
         cv::imshow("RGB Video", frame);
        
         if(cv::waitKey(30) == 27 or field.isStable()) break;
-    }
-
+    }    
+    
     FindRobots founder(output);
     while(true){
+        video >> frame;
         founder.ResizeLimits(frame);
+
         cv::imshow("RGB Video", frame);
         if (cv::waitKey(30) == 27) break;
     }
