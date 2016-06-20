@@ -72,8 +72,7 @@ void FieldLimits::preProcessor(cv::Mat input){
     
     cv::Mat element = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3), cv::Point(1, 1));
     
-    cv::blur(cannyMat, cannyMat, cv::Size(5,5));
-    cv::Canny(cannyMat, dst, _cannythresh1, _cannythresh2, 3);
+    cv::Canny(channels[2], dst, _cannythresh1, _cannythresh2, 3);
     cv::imshow("Canny Out", dst);
     if(calibrating){
         cv::createTrackbar("Canny Threshold 1", "Canny Out", &_cannythresh1, 1000);
