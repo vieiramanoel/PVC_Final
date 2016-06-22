@@ -2,29 +2,27 @@
 #include <iostream>
 #include "fieldlimits.hpp"
 #include <findrobots.hpp>
+#include "limitsparams.hpp"
 
 int main(int argc, char const *argv[])
 {
     FieldLimits field;
     cv::VideoCapture video("rgb_video.avi");
     cv::Mat frame;
-    cv::Rect output;
-    std::vector<std::vector<cv::Point>> contours;
 
     while(true){
         video >> frame;
         
         field.calculateProb(frame);
-        output = field.getResult();
-        contours = field.getContours();
-
         cv::imshow("RGB Video", frame);
        
         if(cv::waitKey(30) == 27 or field.isStable()) break;
     }    
     
+
+    limitsParameters output = field.getResult();
     cv::destroyWindow("Canny Out");
-    FindRobots founder(output, contours);
+    FindRobots founder(output);
 
     while(true){
         video >> frame;

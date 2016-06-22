@@ -27,7 +27,7 @@ FieldLimits::~FieldLimits(){
 void FieldLimits::calculateProb(cv::Mat input){
     preProcessor(input);
     if(not hasRectSetted_){
-        std::vector<std::vector<cv::Point> > newcontours;
+        std::vector<std::vector<cv::Point>> newcontours;
         std::vector<cv::Vec4i> newhierarchy;
         cv::Rect newboundingRect;
         cv::Mat test;
@@ -73,21 +73,28 @@ void FieldLimits::preProcessor(cv::Mat input){
     cv::Mat element = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3), cv::Point(1, 1));
     
     cv::Canny(channels[2], dst, _cannythresh1, _cannythresh2, 3);
-    cv::imshow("Canny Out", dst);
+    
     if(calibrating){
+        cv::imshow("Canny Out", dst);
         cv::createTrackbar("Canny Threshold 1", "Canny Out", &_cannythresh1, 1000);
         cv::createTrackbar("Canny Threshold 2", "Canny Out", &_cannythresh2, 1000);
     }
 }
 
-cv::Rect FieldLimits::getResult(){
-    return boundingRect;
+limitsParameters FieldLimits::getResult(){
+    params.limits = boundingRect;
+    params.contours = contours;
+    params.hierarchy = hierarchy;
+    params.largestAreaIndex = largestAreaIndex;
+    return params;
 }
 
 std::vector<std::vector<cv::Point>> FieldLimits::getContours(){
     return contours;
 }
 
+
 bool FieldLimits::isStable(){
+    return false;
     return counterAdjust_ > 4000 ? true : false;
 }
