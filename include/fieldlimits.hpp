@@ -11,9 +11,8 @@ class FieldLimits
     FieldLimits();
     ~FieldLimits();
     void calculateProb(cv::Mat);
-    void setNewRect(cv::Rect);
     bool isStable();
-
+    std::vector<std::vector<cv::Point>> getContours();
     cv::Rect getResult();
 
   private:

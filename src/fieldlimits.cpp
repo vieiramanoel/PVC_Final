@@ -84,9 +84,8 @@ cv::Rect FieldLimits::getResult(){
     return boundingRect;
 }
 
-void FieldLimits::setNewRect(cv::Rect newlimits){
-    hasRectSetted_ = true;
-    boundingRect = newlimits;
+std::vector<std::vector<cv::Point>> FieldLimits::getContours(){
+    return contours;
 }
 
 bool FieldLimits::isStable(){

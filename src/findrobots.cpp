@@ -1,8 +1,9 @@
 #include "findrobots.hpp"
 
 
-FindRobots::FindRobots(cv::Rect limits){
+FindRobots::FindRobots(cv::Rect limits, std::vector<std::vector<cv::Point>> contours){
     limits_ = limits;
+    contours_ = contours;
     resizeRatio_ = 0;
     cv::FileStorage paramReader("data.yml", cv::FileStorage::READ);
 
@@ -21,7 +22,7 @@ void FindRobots::ResizeLimits(cv::Mat input){
 void FindRobots::find(cv::Mat input){
     preprocessor(input);
     uchar* p;
-    int zeroscounter;
+    cv::Mat upperPoints(480, 640, CV_8UC1, cv::Scalar(0));
     for (int i = newLimits.x; i < newLimits.y + newLimits.height; ++i)
     {
         p = dst.ptr<uchar>(i);
@@ -32,10 +33,19 @@ void FindRobots::find(cv::Mat input){
             {
                 auto robot = cv::Point(j, i);
                 cv::circle(input, robot, 2, cv::Scalar::all(-1));
+                upperPoints.at<uchar>(i, j) = 255;
             }
         }
     }
+    
+    extractPoints(upperPoints);
+    cv::imshow("white image", upperPoints);
+}
 
+void FindRobots::extractPoints(cv::Mat upperPoints){
+    for(auto vec : contours_)
+        for(auto point : vec)
+            upperPoints.at<uchar>(point.x, point.y) = 0;
 }
 
 void FindRobots::preprocessor(cv::Mat input){
