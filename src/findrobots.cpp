@@ -32,6 +32,7 @@ void FindRobots::find(cv::Mat input){
     cv::createTrackbar("Area", "white image", &area_, 2000);
 
     uchar* p;
+    cv::dilate(upperPoints, upperPoints, cv::Mat());
     for (int i = 0; i < upperPoints.rows; ++i)
     {
         p = upperPoints.ptr<uchar>(i);
@@ -49,7 +50,7 @@ void FindRobots::find(cv::Mat input){
                 if (islost)
                     p[j] = 0;
 
-                for (int k = 0; k < area and p[j+1] != 255; ++k, ++j)
+                for (int k = 5; k < area and p[j+1] != 255; ++k, ++j)
                     p[j] = 255;
             }else if ((int)p[j] != 0)
             {
@@ -58,10 +59,9 @@ void FindRobots::find(cv::Mat input){
         }
     }
 
-    cv::dilate(upperPoints, upperPoints, cv::Mat());
     cv::findContours(upperPoints, newcontours, newhierarchy, cv::RETR_CCOMP, cv::CHAIN_APPROX_SIMPLE );
 
-    auto color = cv::Scalar::all(133);
+    auto color = cv::Scalar::all(255);
     for (uint i = 0; i < newcontours.size(); ++i)
     {
         auto newboundingRect = cv::boundingRect(newcontours[i]);
@@ -69,7 +69,7 @@ void FindRobots::find(cv::Mat input){
         if (newboundingRect.area() > area_)
         {
             cv::drawContours(upperPoints, newcontours, i, color, 3, 8, newhierarchy);
-            cv::rectangle(upperPoints, newboundingRect, cv::Scalar(255,255,255),3, 8,0); 
+            cv::rectangle(input, newboundingRect, cv::Scalar(255,255,255),3, 8,0); 
         }
     }
 
