@@ -19,9 +19,67 @@ void FindRobots::ResizeLimits(cv::Mat input){
 }
 
 void FindRobots::find(cv::Mat input){
-    preprocessor(input);
+    auto upperPoints = preprocessor(input);
+    extractPoints(upperPoints);
+
+    std::vector<std::vector<cv::Point>> newcontours;
+    std::vector<cv::Vec4i> newhierarchy;
+    cv::Rect newboundingRect;
+    cv::Mat test;
+
+    upperPoints.copyTo(test);
+
+    cv::createTrackbar("Area", "white image", &area_, 2000);
+
     uchar* p;
+    for (int i = 0; i < upperPoints.rows; ++i)
+    {
+        p = upperPoints.ptr<uchar>(i);
+        for (int j = 0; j < upperPoints.cols; ++j)
+        {
+            if ((int)p[j] == 255)
+            {
+                int area = 10;
+                bool islost = true;
+                
+                for (int k = 0; k < 20 and j+k < upperPoints.cols; ++k)
+                    if(p[j+k] == 255)
+                        islost = false;
+
+                if (islost)
+                    p[j] = 0;
+
+                for (int k = 0; k < area and p[j+1] != 255; ++k, ++j)
+                    p[j] = 255;
+            }else if ((int)p[j] != 0)
+            {
+                p[j] = 0;
+            }
+        }
+    }
+
+    cv::dilate(upperPoints, upperPoints, cv::Mat());
+    cv::findContours(upperPoints, newcontours, newhierarchy, cv::RETR_CCOMP, cv::CHAIN_APPROX_SIMPLE );
+
+    auto color = cv::Scalar::all(133);
+    for (uint i = 0; i < newcontours.size(); ++i)
+    {
+        auto newboundingRect = cv::boundingRect(newcontours[i]);
+
+        if (newboundingRect.area() > area_)
+        {
+            cv::drawContours(upperPoints, newcontours, i, color, 3, 8, newhierarchy);
+            cv::rectangle(upperPoints, newboundingRect, cv::Scalar(255,255,255),3, 8,0); 
+        }
+    }
+
+    cv::imshow("white image", upperPoints);
+}
+
+cv::Mat FindRobots::derivate(cv::Mat dst){
     cv::Mat upperPoints(480, 640, CV_8UC1, cv::Scalar(0));
+    uchar* p;
+
     for (int i = newLimits.x; i < newLimits.y + newLimits.height; ++i)
     {
         p = dst.ptr<uchar>(i);
@@ -30,15 +88,11 @@ void FindRobots::find(cv::Mat input){
             if (((int)p[j] == 0 and (int)p[j+1] == 255) or 
                 ((int)p[j] == 255 and (int)p[j+1] == 0 ))
             {
-                auto robot = cv::Point(j, i);
-                cv::circle(input, robot, 2, cv::Scalar::all(-1));
                 upperPoints.at<uchar>(i, j) = 255;
             }
         }
     }
-    
-    extractPoints(upperPoints);
-    cv::imshow("white image", upperPoints);
+    return upperPoints;
 }
 
 void FindRobots::extractPoints(cv::Mat upperPoints){
@@ -46,7 +100,7 @@ void FindRobots::extractPoints(cv::Mat upperPoints){
     cv::drawContours(upperPoints, params_.contours, params_.largestAreaIndex, color, 6, 10, params_.hierarchy);
 }
 
-void FindRobots::preprocessor(cv::Mat input){
+cv::Mat FindRobots::preprocessor(cv::Mat input){
     cv::Mat cannyMat;
     std::vector<cv::Mat> channels(3);
 
@@ -57,9 +111,9 @@ void FindRobots::preprocessor(cv::Mat input){
     
     cv::Mat element = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3), cv::Point(1, 1));
     
-    cv::Canny(channels[2], dst, _cannythresh1, _cannythresh2, 3);
-    cv::imshow("Canny Out", dst);
-    
+    cv::Canny(channels[2], cannyMat, _cannythresh1, _cannythresh2, 3);
+    cannyMat = derivate(cannyMat);
+    return cannyMat;
 }
 
 void FindRobots::drawRect(cv::Mat input){

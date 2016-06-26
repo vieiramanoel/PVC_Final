@@ -12,19 +12,20 @@ class FindRobots
     void ResizeLimits(cv::Mat);
     void find(cv::Mat);
   private:
+    cv::Mat derivate(cv::Mat);
     void drawRect(cv::Mat);
-    void preprocessor(cv::Mat);
+    cv::Mat preprocessor(cv::Mat);
     void extractPoints(cv::Mat);
     
     cv::Rect newLimits;
+    cv::Mat input_;
     
     int resizeRatio_;
-    
-    cv::Mat input_;
-    cv::Mat dst;
+    int area_;
 
     int _cannythresh1;
     int _cannythresh2;
+
     limitsParameters params_;
 };
 #endif
