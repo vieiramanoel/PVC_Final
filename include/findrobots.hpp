@@ -26,6 +26,8 @@ class FindRobots
     int _cannythresh1;
     int _cannythresh2;
 
+    bool hasclosed_;
+    
     limitsParameters params_;
 };
 #endif

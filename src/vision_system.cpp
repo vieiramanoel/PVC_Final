@@ -1,8 +1,9 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include "fieldlimits.hpp"
-#include <findrobots.hpp>
+#include "findrobots.hpp"
 #include "limitsparams.hpp"
+#include "findball.hpp"
 
 int main(int argc, char const *argv[])
 {
@@ -22,14 +23,17 @@ int main(int argc, char const *argv[])
 
     limitsParameters output = field.getResult();
     cv::destroyWindow("Canny Out");
-    FindRobots founder(output);
-
+    FindRobots robotFounder(output);
+    BallIdentifier ballFinder;
     while(true){
         video >> frame;
-        founder.find(frame);
-        founder.ResizeLimits(frame);
+        ballFinder.find(frame);
+        robotFounder.find(frame);
+        robotFounder.ResizeLimits(frame);
+
         cv::imshow("RGB Video", frame);
-        if (cv::waitKey(30) == 27) break;
+
+        if (cv::waitKey(30) == 'q') break;
     }
 
     return 0;

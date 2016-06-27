@@ -6,6 +6,8 @@ FindRobots::FindRobots(limitsParameters params){
     resizeRatio_ = 0;
     cv::FileStorage paramReader("data.yml", cv::FileStorage::READ);
 
+    hasclosed_ = false;
+
     auto cannyParam = paramReader["canny_parameters"];
     _cannythresh1 = cannyParam["Thresh1"];
     _cannythresh2 = cannyParam["Thresh2"];
@@ -69,11 +71,20 @@ void FindRobots::find(cv::Mat input){
         if (newboundingRect.area() > area_)
         {
             cv::drawContours(upperPoints, newcontours, i, color, 3, 8, newhierarchy);
-            cv::rectangle(input, newboundingRect, cv::Scalar(255,255,255),3, 8,0); 
+            if (newboundingRect.height < 2*newboundingRect.width  or newboundingRect.height < newboundingRect.width/2)
+            {
+                cv::rectangle(input, newboundingRect, cv::Scalar(255,255,255),3, 8,0); 
+            }
         }
     }
 
-    cv::imshow("white image", upperPoints);
+    if (not hasclosed_){
+        cv::imshow("white image", upperPoints);
+        if (cv::waitKey(30) == 'w'){
+          cv::destroyWindow("white image");
+          hasclosed_ = true;  
+        } 
+    }
 }
 
 cv::Mat FindRobots::derivate(cv::Mat dst){
