@@ -21,16 +21,17 @@ int main(int argc, char const *argv[])
     }    
     
 
-    limitsParameters output = field.getResult();
+    auto output = field.getResult();
     cv::destroyWindow("Canny Out");
     FindRobots robotFounder(output);
     BallIdentifier ballFinder;
+    FindTeams teamFinder;
     while(true){
         video >> frame;
         ballFinder.find(frame);
         robotFounder.find(frame);
         robotFounder.ResizeLimits(frame);
-
+        auto robots = robotFounder.getRobots();
         cv::imshow("RGB Video", frame);
 
         if (cv::waitKey(30) == 'q') break;

@@ -11,6 +11,7 @@ class FindRobots
     FindRobots(limitsParameters);
     void ResizeLimits(cv::Mat);
     void find(cv::Mat);
+    std::vector<cv::Rect> getRobots();
   private:
     cv::Mat derivate(cv::Mat);
     void drawRect(cv::Mat);
@@ -19,7 +20,7 @@ class FindRobots
     
     cv::Rect newLimits;
     cv::Mat input_;
-    
+    std::vector<cv::Rect> robots;
     int resizeRatio_;
     int area_;
 

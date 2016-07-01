@@ -5,7 +5,6 @@ FindRobots::FindRobots(limitsParameters params){
     params_ = params;
     resizeRatio_ = 0;
     cv::FileStorage paramReader("data.yml", cv::FileStorage::READ);
-
     hasclosed_ = false;
 
     auto cannyParam = paramReader["canny_parameters"];
@@ -72,7 +71,8 @@ void FindRobots::find(cv::Mat input){
         {
             cv::drawContours(upperPoints, newcontours, i, color, 3, 8, newhierarchy);
             if (newboundingRect.height < 2*newboundingRect.width  or newboundingRect.height < newboundingRect.width/2)
-            {
+            {   
+                robots.push_back(newboundingRect);
                 cv::rectangle(input, newboundingRect, cv::Scalar(255,255,255),3, 8,0); 
             }
         }
@@ -120,8 +120,6 @@ cv::Mat FindRobots::preprocessor(cv::Mat input){
     cv::cvtColor(cannyMat, cannyMat, CV_BGR2HSV);
     cv::split(cannyMat, channels);
     
-    cv::Mat element = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3), cv::Point(1, 1));
-    
     cv::Canny(channels[2], cannyMat, _cannythresh1, _cannythresh2, 3);
     cannyMat = derivate(cannyMat);
     return cannyMat;
@@ -137,4 +135,10 @@ void FindRobots::drawRect(cv::Mat input){
     newLimits.width *= 1 - ((float)resizeRatio_/100);
     newLimits.height *= 1 - ((float)resizeRatio_/100);
     cv::rectangle(input, newLimits, cv::Scalar(0,255,0),3, 8,0);
+}
+
+std::vector<cv::Rect> getRobots(){
+    auto toreturn = robots;
+    robots.clear();
+    return toreturn;
 }
