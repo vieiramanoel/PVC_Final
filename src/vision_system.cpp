@@ -4,6 +4,7 @@
 #include "findrobots.hpp"
 #include "limitsparams.hpp"
 #include "findball.hpp"
+#include "findteams.hpp"
 
 int main(int argc, char const *argv[])
 {

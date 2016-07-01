@@ -137,7 +137,7 @@ void FindRobots::drawRect(cv::Mat input){
     cv::rectangle(input, newLimits, cv::Scalar(0,255,0),3, 8,0);
 }
 
-std::vector<cv::Rect> getRobots(){
+std::vector<cv::Rect> FindRobots::getRobots(){
     auto toreturn = robots;
     robots.clear();
     return toreturn;
