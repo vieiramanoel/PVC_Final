@@ -16,7 +16,7 @@ class FindRobots
     cv::Mat derivate(cv::Mat);
     void drawRect(cv::Mat);
     cv::Mat preprocessor(cv::Mat);
-    void extractPoints(cv::Mat);
+    void extractPoints(cv::Mat&);
     
     cv::Rect newLimits;
     cv::Mat input_;
@@ -26,7 +26,8 @@ class FindRobots
 
     int _cannythresh1;
     int _cannythresh2;
-
+    int erosion_size = 1;
+    int erosion_size2 = 1;
     bool hasclosed_;
     
     limitsParameters params_;

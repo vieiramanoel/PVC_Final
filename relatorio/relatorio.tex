@@ -31,10 +31,10 @@
 	\section{Revisão Bibliográfica}
 	
 	\section{Metodologia}
-		\paragraph{Materiais}
+		\subsection{Materiais}
 		Todo o desenvolvimento aconteceu com a utilização do OpenCV e com a linguagem C++. A base de dados foi criada especificamente para esse trabalho, com vídeos gravados de cima de um campo contendo seis robôs e uma bola.
 		\subsection{Detecção do campo}
-		\paragraph{1º parágrafo}
+		\paragraph{}
 		O primeiro passo do desenvolvimento foi realizar a detecção do campo, pois assim é possível criar uma região de interesse para posteriormente detectar os robôs e as bolas. Para cada frame de imagem durante o início da transmissão do vídeo foi aplicado um filtro de Canny para detecção de bordas com o objetivo de identificar as linhas que demarcam o campo. O filtro de Canny retorna uma imagem binária com as principais bordas encontradas na imagem, e um parâmetro de \textit{thresh} permite controlar os limites encontrado. A partir disso é possível encontrar os contornos e suprimir as linhas da imagem para que na região de interesse permaneçam somente os robôs.
 	\section{Resultados}
 			
