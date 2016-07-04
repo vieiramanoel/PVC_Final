@@ -1,5 +1,5 @@
 %YAML:1.0
 canny_parameters:
-   Thresh1: 105
-   Thresh2: 372
+   Thresh1: 128
+   Thresh2: 613
    Calibrating: 1
