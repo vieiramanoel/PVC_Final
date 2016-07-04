@@ -29,3 +29,13 @@
 
 # Videos Files
 *.avi
+
+# Tex useless files
+*.bst
+*.aux
+*.bbl
+*.blg
+*.loa
+*.log
+*.los
+*.out
