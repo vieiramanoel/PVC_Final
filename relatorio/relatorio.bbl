@@ -1,0 +1,12 @@
+\begin{thebibliography}{xx}
+
+\harvarditem{Canny}{1986.}{CannyArticle}
+Canny, J.  \harvardyearleft 1986.\harvardyearright .
+\newblock A computational approach to edge detection.
+
+\harvarditem{OpenCV}{n.d.}{Canny_openCV}
+OpenCV, T.  \harvardyearleft n.d.\harvardyearright .
+\newblock {\em Canny Edge Detector}.
+\newline\url{http://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/canny_detector/canny_detector.html}
+
+\end{thebibliography}

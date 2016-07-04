@@ -5,6 +5,7 @@
 \usepackage{graphicx}
 \graphicspath{{images/}}
 \usepackage{ae}
+\usepackage{url}
 
 
 \begin{document}
@@ -32,7 +33,7 @@
 		\paragraph{}
 		O estudo de métodos a aplicação no sistema se mostrou importante, apesar de não ter sido profundo. Técnicas como a criada por John F. Canny para detecção de bordas e o cálculo de histogramas foram adotadas como base para o algoritmo elaborado. Essas técnicas foram utilizadas com o objetivo de extrair as posições dos seis robôs presentes na partida além da bola e do campo.
 		\paragraph{}
-		A técnica de Canny se baseia nas variações de intensidades da imagem, onde variações abruptas, que são quantificadas por meio de derivadas da imagem, são consideradas bordas. O filtro de Canny apresenta uma boa precisão, boa detecção e sua característica de resposta mínima elimina ambiguidade na marcação das bordas.
+		A técnica de Canny \cite{CannyArticle} se baseia nas variações de intensidades da imagem, onde variações abruptas, que são quantificadas por meio de derivadas da imagem, são consideradas bordas. O filtro de Canny apresenta uma boa precisão, boa detecção e sua característica de resposta mínima elimina ambiguidade na marcação das bordas.
 		\paragraph{}
 		Um filtro Guassiano é aplicado para eliminar parte do ruído. Um exemplo de \textit{kernel} Gaussiano de tamanho 5:
 		\begin{center}
@@ -60,7 +61,7 @@
 		Todo o desenvolvimento aconteceu com a utilização do OpenCV e com a linguagem C++. A base de dados foi criada especificamente para esse trabalho, com vídeos gravados de cima de um campo contendo seis robôs e uma bola. 
 		\subsection{Detecção do campo}
 		\paragraph{}
-		O primeiro passo do desenvolvimento é realizar a detecção do campo, pois assim é possível criar uma região de interesse para posteriormente detectar os robôs e as bolas. Cada \textit{frame} de imagem durante o início da transmissão do vídeo foi convertido em uma imagem HSV e usado apenas seu canal V, que se aproxima da imagem RBG em escala de cinza, mas com menos presença de ruídos e com valores de intensidade mais significativos. Então aplica-se um filtro de Canny para detecção de bordas com o objetivo de identificar as linhas que demarcam o campo. O filtro de Canny retorna uma imagem binária com as principais bordas encontradas na imagem, e dois parâmetros de \textit{thresh} permitem controlar os limites encontrados. À imagem binarizada é aplicada a função \textit{findcountours()} que por sua vez extrai os conjuntos de pontos que formam um contorno, em cima deste retorno é feito o tratamento de forma que apenas o maior contorno seja extraído, uma vez que este é o dado de interesse nesta etapa.
+		O primeiro passo do desenvolvimento é realizar a detecção do campo, pois assim é possível criar uma região de interesse para posteriormente detectar os robôs e as bolas. Cada \textit{frame} de imagem durante o início da transmissão do vídeo foi convertido em uma imagem HSV e usado apenas seu canal V, que se aproxima da imagem RBG em escala de cinza, mas com menos presença de ruídos e com valores de intensidade mais significativos. Então aplica-se um filtro de Canny para detecção de bordas com o objetivo de identificar as linhas que demarcam o campo. O filtro de Canny implementado na biblioteca OpenCV \cite{Canny_openCV} retorna uma imagem binária com as principais bordas encontradas na imagem, e dois parâmetros de \textit{thresh} permitem controlar os limites encontrados. À imagem binarizada é aplicada a função \textit{findcountours()} que por sua vez extrai os conjuntos de pontos que formam um contorno, em cima deste retorno é feito o tratamento de forma que apenas o maior contorno seja extraído, uma vez que este é o dado de interesse nesta etapa.
 		\begin{figure}[h]
 			\centering
 			\includegraphics[scale=0.3]{canny}
@@ -95,5 +96,10 @@
 	\section{Discussão e Conclusões}
 	\paragraph{}
 	O sistema desenvolvido está robusto e eficiente. Os resultados mostram um sistema completamente funcional que será incluído ao algoritmo geral da equipe para trabalho junto com a estratégia de jogo. Futuramente, será adicionado ao sistema a capacidade de identificar os times automaticamente a partir das camisas dos robôs baseado na análise do histograma na região do robô. Bem como melhorar o sistema somando diferentes algoritmos para uma mesma etapa caso tenha havido algum erro no procedimento anterior, assim, se não for possível encontrar os seis robôs por pelos contornos da imagem, tentar procurar por padrão de camisa, por exemplo. Tendo em vista sempre um algoritmo cada vez mais leve, automático e com baixa taxa de erros
+	
+	\medskip
+	
+	\bibliographystyle{ieeetr}
+	\bibliography{bibl}
 
 \end{document}
