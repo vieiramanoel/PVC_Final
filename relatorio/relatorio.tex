@@ -24,7 +24,7 @@
 		
 	\section{Introdução}
 		\paragraph{}
-		Este trabalho foi realizado utilizando como base as necessidades da equipe UnBall, que compete na categoria IEEE Very Small Size de futebol de robôs. A categoria é disputada no Brasil desde 2003, e nela seis robôs, três de cada time, disputam a partida. As principais regras dizem que os robôs devem ser controlados remotamente por um computador que processa a imagem de uma câmera posicionada acima do campo. O principal objetivo das competições de robô é desenvolver-se tecnologicamente de forma que em 2050, seja possível disputar um jogo contra humanos. Esse trabalho tratará do desenvolvimento do sistema de visão. Este não será somente útil no curto-prazo, a competição, será útil para trabalhos futuros já que muitas técnicas e lógicas utilizadas aqui podem ser reaproveitadas para outras finalidades.
+		Este trabalho foi realizado utilizando como base as necessidades da equipe UnBall, que compete na categoria IEEE Very Small Size de futebol de robôs. A categoria é disputada no Brasil desde 2003, e nela seis robôs, três de cada time, disputam a partida. As principais regras dizem que os robôs devem ser controlados remotamente por um computador que processa a imagem de uma câmera posicionada acima do campo. O principal objetivo das competições de robótica é desenvolver a tecnologia necessária para que em 2050, seja possível disputar um jogo contra humanos. Esse trabalho tratará do desenvolvimento do sistema de visão. Este não será somente útil a curto-prazo, para a competição, será útil para trabalhos futuros já que muitas técnicas e lógicas utilizadas aqui podem ser reaproveitadas para outras finalidades.
 		\paragraph{}
 		A visão computacional é parte fundamental da competição pois a estratégia de jogo depende das saídas do algoritmo da visão, como a posição dos robôs e da bola. A UnBall, anteriormente, já havia desenvolvido um sistema utilizando o Kinect, porém a falta de poder computacional para se trabalhar com imagens com profundidade atrapalhou o funcionamento do algoritmo. Esse trabalho, utiliza diversas técnicas para realizar toda a detecção dos elementos de interesse.
 		\paragraph{}
@@ -32,10 +32,23 @@
 		\paragraph{}
 		A técnica de Canny se baseia nas variações de intensidades da imagem, onde variações abruptas, que são quantificadas por meio de derivadas da imagem, são consideradas bordas. O filtro de Canny apresenta uma boa precisão, boa detecção e sua característica de resposta mínima elimina ambiguidade na marcação das bordas.
 		\paragraph{}
-		Para análises de cor, a imagem no sistema de cores HSV (\textit{Hue}, \textit{Saturation} e \textit{Value}) é indicada por sua robustez em v. No sistema HSV, diferentemente do sistema RGB, a saturação não afeta todos os canais uniformemente, tornando fácil identificar cores pela matiz (\textit{hue}).
+		Um filtro Guassiano é aplicado para eliminar parte do ruído. Um exemplo de \textit{kernel} Gaussiano de tamanho 5:
+		\begin{center}
+			$ K = \dfrac{1}{159}\begin{bmatrix} 
+			2 & 4 & 5 & 4 & 2 \\
+			4 & 9 & 12 & 9 & 4 \\
+			5 & 12 & 15 & 12 & 5 \\
+			4 & 9 & 12 & 9 & 4 \\
+			2 & 4 & 5 & 4 & 2
+			\end{bmatrix}$
+		\end{center}
+		\paragraph{}
+		Após isso, duas máscaras de convolução para achar o gradiente de intensidade são aplicadas na imagem para as direções $x$ e $y$. Então os pontos que não são considerados partes de uma borda são removidos. A partir de outros dois parâmetros de limiar, os pixels são aceitos ou não como bordas.
+		\paragraph{}
+		Para análises de cor, a imagem no sistema de cores HSV (\textit{Hue}, \textit{Saturation} e \textit{Value}) é indicada por sua robustez em diferentes níveis de luminosidade. No sistema HSV, diferentemente do sistema RGB, a saturação não afeta todos os canais uniformemente, tornando fácil identificar cores pela matiz (\textit{hue}).
 		\begin{figure}[h]
 			\centering
-			\includegraphics[scale=0.8]{hsv}
+			\includegraphics[scale=0.63]{hsv-2}
 			\caption{Sistema HSV}
 		\end{figure}
 	
@@ -48,6 +61,7 @@
 	\section{Resultados}
 			
 	\section{Discussão e Conclusões}
-	
+	\paragraph{}
+	O sistema desenvolvido está robusto e eficiente. Os resultados mostram um sistema completamente funcional que será incluído ao algoritmo geral da equipe para trabalho junto com a estratégia de jogo. Futuramente, será adicionado ao sistema a capacidade de identificar os times automaticamente a partir das camisas dos robôs.
 
 \end{document}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2016.5.29)  3 JUL 2016 21:10
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2016.5.29)  3 JUL 2016 22:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -665,47 +665,51 @@ LaTeX Font Info:    Try loading font information for T1+aess on input line 17.
 (/usr/share/texlive/texmf-dist/tex/latex/ae/t1aess.fd
 File: t1aess.fd 1997/11/16 Font definitions for T1/aess.
 )
-<images/hsv.jpg, id=29, 149.05687pt x 299.61937pt>
-File: images/hsv.jpg Graphic file (type jpg)
- <use images/hsv.jpg>
-Package pdftex.def Info: images/hsv.jpg used on input line 38.
-(pdftex.def)             Requested size: 119.24565pt x 239.69582pt.
+<images/hsv-2.png, id=29, 198.7425pt x 399.4925pt>
+File: images/hsv-2.png Graphic file (type png)
+ <use images/hsv-2.png>
+Package pdftex.def Info: images/hsv-2.png used on input line 51.
+(pdftex.def)             Requested size: 125.20842pt x 251.6816pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
 
 
- <./images/hsv.jpg>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 53.
-
-[2
-
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 53.
- (./relatorio.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 53.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 53.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 67.
+ [2
+
+ <./images/hsv-2.png>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 67.
+(./relatorio.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 67.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 67.
 Package rerunfilecheck Info: File `relatorio.out' has not changed.
 (rerunfilecheck)             Checksum: 9DBEEC558FF4845056222B31EDD9F1DF;320.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 53.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 67.
  ) 
 Here is how much of TeX's memory you used:
- 7353 strings out of 495004
- 103519 string characters out of 6180662
- 200423 words of memory out of 5000000
+ 7355 strings out of 495004
+ 103557 string characters out of 6180662
+ 203423 words of memory out of 5000000
  10428 multiletter control sequences out of 15000+600000
  15998 words of font info for 36 fonts, out of 8000000 for 9000
  16 hyphenation exceptions out of 8191
- 32i,7n,29p,966b,334s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 32i,8n,29p,966b,334s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/sha
-re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texl
-ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on relatorio.pdf (2 pages, 98998 bytes).
+re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/font
+s/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmtt10.pfb>
+Output written on relatorio.pdf (2 pages, 166813 bytes).
 PDF statistics:
- 81 PDF objects out of 1000 (max. 8388607)
- 69 compressed objects within 1 object stream
- 18 named destinations out of 1000 (max. 500000)
+ 95 PDF objects out of 1000 (max. 8388607)
+ 80 compressed objects within 1 object stream
+ 21 named destinations out of 1000 (max. 500000)
  54 words of extra memory for PDF output out of 10000 (max. 10000000)
 
