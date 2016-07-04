@@ -11,6 +11,8 @@
 	\title{Projeto Final - Sistema de Visão Computacional para Futebol de Robôs}
 	\date{04-07-2016}
 	\author{Samuel Venzi Lima Monteiro de Oliveira\\14/0162241}{samuel.venzi@me.com}
+	
+	\author{Manoel Vieira Coelho Neto\\14/0152512}{vieiranetoc@gmail.com}
 		\twocolumn[
 			\maketitle
 			\selectlanguage{brazil}
@@ -53,26 +55,41 @@
 		\end{figure}
 	
 	\section{Metodologia}
-		\paragraph{}
-		Todo o desenvolvimento aconteceu com a utilização do OpenCV e com a linguagem C++. A base de dados foi criada especificamente para esse trabalho, com vídeos gravados de cima de um campo contendo seis robôs e uma bola.
-		\subsection{Detecção do campo}
-		\paragraph{}
-		O primeiro passo do desenvolvimento foi realizar a detecção do campo, pois assim é possível criar uma região de interesse para posteriormente detectar os robôs e as bolas. Para cada frame de imagem durante o início da transmissão do vídeo foi aplicado um filtro de Canny para detecção de bordas com o objetivo de identificar as linhas que demarcam o campo. O filtro de Canny retorna uma imagem binária com as principais bordas encontradas na imagem, e um parâmetro de \textit{thresh} permite controlar os limites encontrado. A partir disso é possível encontrar os contornos e suprimir as linhas da imagem para que na região de interesse permaneçam somente os robôs. 
 		\subsection{Materiais}
-		\paragraph{}Todo o desenvolvimento aconteceu com a utilização do OpenCV e com a linguagem C++. A base de dados foi criada especificamente para esse trabalho, com vídeos gravados acima do campo contendo seis robôs e uma bola.
+		\paragraph{}
+		Todo o desenvolvimento aconteceu com a utilização do OpenCV e com a linguagem C++. A base de dados foi criada especificamente para esse trabalho, com vídeos gravados de cima de um campo contendo seis robôs e uma bola. 
 		\subsection{Detecção do campo}
 		\paragraph{}
 		O primeiro passo do desenvolvimento é realizar a detecção do campo, pois assim é possível criar uma região de interesse para posteriormente detectar os robôs e as bolas. Cada \textit{frame} de imagem durante o início da transmissão do vídeo foi convertido em uma imagem HSV e usado apenas seu canal V, que se aproxima da imagem RBG em escala de cinza, mas com menos presença de ruídos e com valores de intensidade mais significativos. Então aplica-se um filtro de Canny para detecção de bordas com o objetivo de identificar as linhas que demarcam o campo. O filtro de Canny retorna uma imagem binária com as principais bordas encontradas na imagem, e dois parâmetros de \textit{thresh} permitem controlar os limites encontrados. À imagem binarizada é aplicada a função \textit{findcountours()} que por sua vez extrai os conjuntos de pontos que formam um contorno, em cima deste retorno é feito o tratamento de forma que apenas o maior contorno seja extraído, uma vez que este é o dado de interesse nesta etapa.
+		\begin{figure}[h]
+			\centering
+			\includegraphics[scale=0.3]{canny}
+			\caption{Imagem após a aplicação de Canny}
+		\end{figure}
+		\begin{figure}[h]
+			\centering
+			\includegraphics[scale=0.3]{field_detection}
+			\caption{Detecção do campo}
+		\end{figure}
+		\subsection{Detecção dos robôs}
 		\par Na etapa seguinte continua-se a aplicar o filtro de Canny no canal V da imagem convertida em HSV, mas com os contornos obtidos na etapa anterior subtraídos do resultado da segmentação de bordas. Tem-se assim apenas uma imagem binária com os robôs e alguns erros decorrentes do desenho não tão preciso do contorno do campo, mas por formarem linhas e não \textit{blobs} podem ser descartados no tratamento da imagem. Tais \textit{blobs} são considerados robôs e ajusta-se por meio de \textit{trackbar} qual a área minima para que um \textit{blob} seja considerado um robô. É feito também tratamento de forma a desconsiderar retângulos com a proporção maior que 1:3 ou 3:1, uma vez que os robôs tendem a formar retângulos de razão entre os lados de aproximadamente 1. Por fim, para que fique melhor definidos os blobs finais, aplica-se uma erosão na imagem binarizada final usando um kernel 2x2.
+		
+		\subsection{Detecção da bola}
 		\par A segmentação da bola é feita de maneira distinta dos robôs, por sua cor ser singular no sistema de visão e assim não aproximar-se das outras cores presentes ou possíveis é viável que se faça segmentação por cor nos \textit{frames} de entrada, para que, assim, a bola seja extraída dos outros elementos da imagem. O primeiro passo para isso é que se converta o \textit{frame} RGB da entrada para o canal HSV, de forma a amenizar a contribuição da luminosidade do ambiente na segmentação. A próxima etapa consiste em ajustar os valores dos canais H, S e V para que apenas a variação da cor laranja da bola esteja presente na imagem segmentada. Com os valores dos canais desejados, aplica-se a função \textit{inrange} resultando numa imagem com apenas um ponto branco referente ao elemento. É importante ressaltar que as duas segmentações são feitas separadamente em instâncias distintas - a segmentação dos robôs não afeta a segmentação da bola-.
 	\section{Resultados}
 		Os resultados apresentados nesta seção mostram a precisão e robustez do algoritmo, onde a taxa de F. Measure foi maior que 0.90 numa escala de 0 a 1. Havendo poucos frames onde o sistema não foi capaz de identificar o robô como um robô (falso negativo) ou a bola como um \textit{blob} de robô (falso positivo), foram contabilizados também frames em que uma mão aparecia no campo e era entendida como um robô pelo sistema, mesmo que tal situação durante um jogo da competição seja improvável, foi computada. Abaixo é possível ver a curva normal dos dados coletados do vídeo de entrada.\\
-		%inserir imagem aqui, samuel kkkk%\\
-		\textbf{NAO ESQUECE DE POR A IMAGEM DO GRAFICO}\\
+		\begin{figure}[h]
+			\centering
+			\includegraphics[scale=0.3]{grafico}
+			\caption{Gráfico normal}
+		\end{figure}
 		A média dos valores de F. Measure foi igual a 0.94, com desvio padrão entre as sucessivas medidas igual a 0.04, pode-se observar a alta taxa de precisão e o baixo índice de variação entre as diferentes medidas.
 		Foi possível observar também que a discrepância entre o centro real dos elementos (robôs e bola) e o centro identificado pelo algoritmo foi suficientemente pequeno para que fosse desconsiderado o erro entre essas duas medidas. Abaixo é possível observar o resultado final do algoritmo identificando todos os elementos de interesse sobre a imagem de entrada em RBG do frame da câmera.\\
-		%inserir imagem aqui, samuel kkkk%\\
-		\textbf{NAO ESQUECE DE POR A IMAGEM DO CAMPO FINAL}\\
+		\begin{figure}[h]
+			\centering
+			\includegraphics[scale=0.3]{ball_detection}
+			\caption{Detecção dos robôs e da bola}
+		\end{figure}\\
 		
 		
 	\section{Discussão e Conclusões}
